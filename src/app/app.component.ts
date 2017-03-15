@@ -1,17 +1,27 @@
-import { Component } from '@angular/core';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from './firebase.service';
+import { Business } from './models/Business';
+import { Category } from './models/Category';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [FirebaseService]
 })
 export class AppComponent {
-  title = 'app works!';
-  items: FirebaseListObservable<any[]>;
+  businesses: Business[];
+  categories: Category[];
 
-  constructor(af: AngularFire) {
-    this.items = af.database.list('/items');
-    console.log(this.items);
+  constructor(private _firebaseService: FirebaseService) {}
+
+  ngOnInit() {
+    this._firebaseService.getBusinesses().subscribe(businesses => {
+      this.businesses = businesses;
+    });
+
+    this._firebaseService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
   }
 }
