@@ -12,6 +12,8 @@ import { Category } from './models/Category';
 export class AppComponent {
   businesses: Business[];
   categories: Category[];
+  appState: string;
+  activeKey: string;
 
   constructor(private _firebaseService: FirebaseService) {}
 
@@ -23,5 +25,14 @@ export class AppComponent {
     this._firebaseService.getCategories().subscribe(categories => {
       this.categories = categories;
     });
+  }
+
+  changeState(state, key) {
+    console.log('Changing state to: ' + state);
+    if(key) {
+      console.log('Changing key to: ' + key);
+      this.activeKey = key;
+    } 
+    this.appState = state;
   }
 }
